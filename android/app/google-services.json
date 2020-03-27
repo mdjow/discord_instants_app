@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "164739352360",
+    "firebase_url": "https://discord-instants-app.firebaseio.com",
+    "project_id": "discord-instants-app",
+    "storage_bucket": "discord-instants-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:164739352360:android:840d4b0f93da54e0e8321d",
+        "android_client_info": {
+          "package_name": "com.djow.discordinstantsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "164739352360-i3qpih7ds0o6ep1d9urdiuo21ie6da1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.djow.discordinstantsapp",
+            "certificate_hash": "1990974e372261be6b1fd8cd36793fe586a1839a"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOKSUzhBCiv6VPD4akEUbWutK8Y1e_hYA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
