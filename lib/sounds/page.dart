@@ -46,7 +46,7 @@ class _MySoundsPageState extends State<MySoundsPage> {
             ),
           ],
           currentIndex: currentTab,
-          selectedItemColor: Colors.amber[800],
+          selectedItemColor: Theme.of(context).accentColor,
           onTap: (value) {
             _soundsStore.setTabSelected(value);
             setState(() {
@@ -85,12 +85,14 @@ class _MySoundsPageState extends State<MySoundsPage> {
                   padding: EdgeInsets.all(5),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5),
-                    side: BorderSide(color: Colors.red),
+                    side: BorderSide(
+                      color: Theme.of(context).accentColor,
+                    ),
                   ),
                   onPressed: () => _soundsStore.playing == sound.url
                       ? _soundsStore.stopDiscord(sound.url)
                       : _soundsStore.playDiscord(sound.url),
-                  color: Colors.red,
+                  color: Theme.of(context).accentColor,
                   textColor: Colors.white,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
