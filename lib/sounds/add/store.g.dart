@@ -60,6 +60,30 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
     }, _$soundLinkAtom, name: '${_$soundLinkAtom.name}_set');
   }
 
+  final _$favorAtom = Atom(name: '_AddSoundStoreBase.favor');
+
+  @override
+  bool get favor {
+    _$favorAtom.context.enforceReadPolicy(_$favorAtom);
+    _$favorAtom.reportObserved();
+    return super.favor;
+  }
+
+  @override
+  set favor(bool value) {
+    _$favorAtom.context.conditionallyRunInAction(() {
+      super.favor = value;
+      _$favorAtom.reportChanged();
+    }, _$favorAtom, name: '${_$favorAtom.name}_set');
+  }
+
+  final _$favorSoundAsyncAction = AsyncAction('favorSound');
+
+  @override
+  Future<void> favorSound(Sound sound) {
+    return _$favorSoundAsyncAction.run(() => super.favorSound(sound));
+  }
+
   final _$_AddSoundStoreBaseActionController =
       ActionController(name: '_AddSoundStoreBase');
 
@@ -94,6 +118,16 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
   }
 
   @override
+  void setFavor(DocumentReference ref) {
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    try {
+      return super.setFavor(ref);
+    } finally {
+      _$_AddSoundStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void addSound() {
     final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
     try {
@@ -116,7 +150,7 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
   @override
   String toString() {
     final string =
-        'name: ${name.toString()},desc: ${desc.toString()},soundLink: ${soundLink.toString()}';
+        'name: ${name.toString()},desc: ${desc.toString()},soundLink: ${soundLink.toString()},favor: ${favor.toString()}';
     return '{$string}';
   }
 }

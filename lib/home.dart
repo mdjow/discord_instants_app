@@ -7,10 +7,12 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
+      themeMode: ThemeMode.dark,
+      darkTheme: ThemeData(
+        primaryColorDark: Colors.indigo,
+        accentColor: Colors.indigoAccent,
         brightness: Brightness.dark,
-        primaryColor: Colors.deepPurple,
-        accentColor: Colors.blueGrey,
+        buttonColor: Colors.white30,
       ),
       title: "Discord Instants App",
       home: MySoundsPage(),

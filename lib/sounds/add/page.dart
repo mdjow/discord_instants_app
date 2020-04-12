@@ -1,5 +1,6 @@
 import 'package:discord_instants_app/sounds/model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 
 import 'store.dart';
@@ -13,8 +14,27 @@ class AddSoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _addSoundsStore.setFavor(sound.ref);
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          Observer(
+            builder: (_) => IconButton(
+              color: Colors.amber,
+              onPressed: () {
+                if (!_formKey.currentState.validate()) {
+                  return;
+                }
+                _formKey.currentState.save();
+
+                _addSoundsStore.favor ? _addSoundsStore.disfavorSound(sound) : _addSoundsStore.favorSound(sound);
+              },
+              icon: _addSoundsStore.favor ? Icon(Icons.star) : Icon(Icons.star_border),
+            ),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (!_formKey.currentState.validate()) {
@@ -42,6 +62,7 @@ class AddSoundPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: TextFormField(
+                    autofocus: true,
                     initialValue: sound?.title ?? "",
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),

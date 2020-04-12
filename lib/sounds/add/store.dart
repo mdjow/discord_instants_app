@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
 
 import '../model.dart';
+import '../store.dart';
 
 part 'store.g.dart';
 
@@ -12,6 +13,7 @@ class AddSoundStore = _AddSoundStoreBase with _$AddSoundStore;
 abstract class _AddSoundStoreBase with Store {
   final _fireStore = GetIt.I.get<Firestore>();
   final _loginStore = GetIt.I.get<LoginStore>();
+  final _soundStore = GetIt.I.get<SoundsStore>();
 
   @observable
   String name;
@@ -22,6 +24,9 @@ abstract class _AddSoundStoreBase with Store {
   @observable
   String soundLink;
 
+  @observable
+  bool favor;
+
   @action
   void setName(value) => name = value;
 
@@ -30,6 +35,16 @@ abstract class _AddSoundStoreBase with Store {
 
   @action
   void setSoundLink(value) => soundLink = value;
+
+  @action
+  void setFavor(DocumentReference ref) {
+    if (ref == null) {
+      favor = false;
+      return;
+    }
+    var exist = _soundStore.mySounds.firstWhere((sound) => sound?.ref == ref, orElse: () => null);
+    favor = exist == null ? false : true;
+  }
 
   @action
   void addSound() {
@@ -79,5 +94,45 @@ abstract class _AddSoundStoreBase with Store {
         .collection("sounds")
         .document(sound.documentID);
     ref.updateData(model);
+  }
+
+  @action
+  Future<void> favorSound(Sound sound) async {
+    if (!_loginStore.logged) {
+      return;
+    }
+
+    final model = {
+      "title": name,
+      "desc": desc,
+      "url": soundLink,
+    };
+
+    final ref = _fireStore
+        .collection("user")
+        .document(
+          _loginStore.user.uid,
+        )
+        .collection("sounds")
+        .document();
+
+    await ref.setData({
+      ...model,
+      "id": ref.documentID,
+      "ref": sound.ref ?? ref,
+    });
+
+    setFavor(sound.ref ?? ref);
+  }
+
+  @action
+  Future<void> disfavorSound(Sound sound) async {
+    if (!_loginStore.logged) {
+      return;
+    }
+
+    await sound.ref.delete();
+
+    setFavor(sound.ref);
   }
 }

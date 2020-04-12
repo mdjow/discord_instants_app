@@ -2,79 +2,101 @@ import 'package:discord_instants_app/login/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../store.dart';
-
-import 'store.dart';
 
 class DrawerPage extends StatelessWidget {
   final _mainStore = GetIt.I.get<MainStore>();
   final _loginStore = GetIt.I.get<LoginStore>();
 
   final _formKey = GlobalKey<FormState>();
-  final maskFormatter = MaskTextInputFormatter(mask: '###.###.###.###:##', filter: {"#": RegExp(r'[0-9]')});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(20),
-        child: Form(
-          key: _formKey,
-          child: Observer(
-            builder: (_) => Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                !_loginStore.logged
-                    ? RaisedButton(
-                        child: Text("login"),
-                        onPressed: () => _loginStore.signIn(),
-                      )
-                    : Row(
-                        children: [
-                          Text(_loginStore?.user?.displayName ?? ""),
-                          RaisedButton(
-                            child: Text("logout"),
-                            onPressed: () => _loginStore.logout(),
-                          )
-                        ],
-                      ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20),
-                  child: TextFormField(
-                    initialValue: _mainStore.apiUrl,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "IP",
-                    ),
-                    validator: (value) {
-                      if (value.isEmpty || value.length < 3) {
-                        return "ip inválido";
-                      }
-                      return null;
-                    },
-                    onSaved: (String value) {
-                      _mainStore.setApiUrl(value);
-                    },
+    return Observer(
+      builder: (_) => Column(
+        children: [
+          !_loginStore.logged
+              ? Padding(padding: EdgeInsets.only(top: 40, bottom: 20), child: signInGoogle())
+              : UserAccountsDrawerHeader(
+                  accountName: Text(_loginStore?.user?.displayName ?? ""),
+                  accountEmail: Text(_loginStore?.user?.email ?? ""),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor: Theme.of(context).platform == TargetPlatform.iOS ? Colors.blue : Colors.white,
+                    backgroundImage: NetworkImage(_loginStore?.user?.photoUrl),
                   ),
                 ),
-                Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: RaisedButton(
-                      onPressed: () {
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(10),
+              children: [
+                Form(
+                  key: _formKey,
+                  child: TextFormField(
+                      initialValue: _mainStore.apiUrl,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "IP",
+                      ),
+                      validator: (value) {
+                        if (value.isEmpty || value.length < 3) {
+                          return "ip inválido";
+                        }
+                        return null;
+                      },
+                      onSaved: (String value) {
+                        _mainStore.setApiUrl(value);
+                      },
+                      onChanged: (_) {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
-                          Navigator.pop(context);
                         }
-                      },
-                      child: Text("Salvar"),
-                    )),
+                      }),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 5),
+                ),
+                ListTile(
+                  onTap: _loginStore.logout,
+                  title: Text("Sair"),
+                )
               ],
             ),
-          ),
-        ),
+          )
+        ],
       ),
     );
   }
+}
+
+Widget signInGoogle() {
+  final _loginStore = GetIt.I.get<LoginStore>();
+
+  return OutlineButton(
+    splashColor: Colors.white70,
+    onPressed: _loginStore.signIn,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+    highlightElevation: 0,
+    borderSide: BorderSide(color: Colors.white70),
+    child: Padding(
+      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image(image: AssetImage("assets/logo.png"), height: 35.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Text(
+              "Faça login no Google",
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white70,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
