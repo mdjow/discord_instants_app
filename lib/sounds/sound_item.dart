@@ -32,7 +32,7 @@ class SoundItem extends StatelessWidget {
         side: BorderSide(),
       ),
       onPressed: () =>
-          _soundsStore.playing == sound.url ? _soundsStore.stopDiscord(sound.url) : _soundsStore.playDiscord(sound.url),
+          _soundsStore.playing == sound.url ? _soundsStore.stopDiscord(sound) : _soundsStore.playDiscord(sound),
       textColor: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -27,6 +27,15 @@ abstract class _AddSoundStoreBase with Store {
   @observable
   bool favor;
 
+  @observable
+  bool public = true;
+
+  @observable
+  bool favorIsBusy = false;
+
+  @action
+  void setPublic(value) => public = value;
+
   @action
   void setName(value) => name = value;
 
@@ -56,10 +65,14 @@ abstract class _AddSoundStoreBase with Store {
       "title": name,
       "desc": desc,
       "url": soundLink,
+      "private": !public,
     };
 
-    final ref = _fireStore.collection("sounds").document();
-    ref.setData({"id": ref.documentID, ...model});
+    var ref;
+    if (public) {
+      ref = _fireStore.collection("sounds").document();
+      ref.setData({"id": ref.documentID, ...model});
+    }
 
     final mySoundRef = _fireStore
         .collection("user")
@@ -69,7 +82,11 @@ abstract class _AddSoundStoreBase with Store {
         .collection("sounds")
         .document();
 
-    mySoundRef.setData({...model, "ref": ref, "id": mySoundRef.documentID});
+    mySoundRef.setData({
+      ...model,
+      "ref": ref,
+      "id": mySoundRef.documentID,
+    });
   }
 
   @action
@@ -82,6 +99,7 @@ abstract class _AddSoundStoreBase with Store {
       "title": name,
       "desc": desc,
       "url": soundLink,
+      "private": !public,
     };
 
     sound.ref.updateData(model);
@@ -98,14 +116,17 @@ abstract class _AddSoundStoreBase with Store {
 
   @action
   Future<void> favorSound(Sound sound) async {
-    if (!_loginStore.logged) {
+    if (!_loginStore.logged || favorIsBusy) {
       return;
     }
+
+    favorIsBusy = true;
 
     final model = {
       "title": name,
       "desc": desc,
       "url": soundLink,
+      "private": !public,
     };
 
     final ref = _fireStore
@@ -122,16 +143,29 @@ abstract class _AddSoundStoreBase with Store {
       "ref": sound.ref ?? ref,
     });
 
+    favorIsBusy = false;
+
     setFavor(sound.ref ?? ref);
   }
 
   @action
   Future<void> disfavorSound(Sound sound) async {
-    if (!_loginStore.logged) {
+    if (!_loginStore.logged || favorIsBusy) {
       return;
     }
 
-    await sound.ref.delete();
+    favorIsBusy = true;
+
+    await _fireStore
+        .collection("user")
+        .document(
+          _loginStore.user.uid,
+        )
+        .collection("sounds")
+        .document(sound.documentID)
+        .delete();
+
+    favorIsBusy = false;
 
     setFavor(sound.ref);
   }

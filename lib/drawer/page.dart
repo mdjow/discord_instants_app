@@ -40,16 +40,14 @@ class DrawerPage extends StatelessWidget {
                       ),
                       validator: (value) {
                         if (value.isEmpty || value.length < 3) {
-                          return "ip inválido";
+                          return "IP inválido";
                         }
                         return null;
                       },
-                      onSaved: (String value) {
-                        _mainStore.setApiUrl(value);
-                      },
-                      onChanged: (_) {
+                      onChanged: (value) {
                         if (_formKey.currentState.validate()) {
                           _formKey.currentState.save();
+                          _mainStore.setApiUrl(value);
                         }
                       }),
                 ),

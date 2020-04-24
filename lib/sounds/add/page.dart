@@ -1,3 +1,4 @@
+import 'package:discord_instants_app/login/store.dart';
 import 'package:discord_instants_app/sounds/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -9,48 +10,83 @@ class AddSoundPage extends StatelessWidget {
   AddSoundPage({this.sound});
 
   final _addSoundsStore = GetIt.I.get<AddSoundStore>();
+  final _loginStore = GetIt.I.get<LoginStore>();
   final _formKey = GlobalKey<FormState>();
+
   final Sound sound;
 
   @override
   Widget build(BuildContext context) {
-    _addSoundsStore.setFavor(sound.ref);
+    _addSoundsStore.setFavor(sound?.ref);
+    _addSoundsStore.setPublic(!(sound?.private ?? false));
+
+    final isEditing = sound != null;
+    final canEdit = sound?.private ?? false || (!isEditing || sound?.ref != null);
 
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Observer(
-            builder: (_) => IconButton(
-              color: Colors.amber,
+          _loginStore.logged
+              ? Observer(builder: (_) {
+                  if (_addSoundsStore.favorIsBusy) {
+                    return IconButton(
+                      color: Colors.amber,
+                      onPressed: () {
+                        if (!_formKey.currentState.validate()) {
+                          return;
+                        }
+                        _formKey.currentState.save();
+
+                        _addSoundsStore.favor
+                            ? _addSoundsStore.disfavorSound(sound)
+                            : _addSoundsStore.favorSound(sound);
+                      },
+                      icon: Container(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          backgroundColor: Colors.amber,
+                          valueColor: new AlwaysStoppedAnimation<Color>(Colors.amber[100]),
+                        ),
+                      ),
+                    );
+                  }
+
+                  return IconButton(
+                    color: Colors.amber,
+                    onPressed: () {
+                      if (!_formKey.currentState.validate()) {
+                        return;
+                      }
+                      _formKey.currentState.save();
+
+                      _addSoundsStore.favor ? _addSoundsStore.disfavorSound(sound) : _addSoundsStore.favorSound(sound);
+                    },
+                    icon: _addSoundsStore.favor ? Icon(Icons.star) : Icon(Icons.star_border),
+                  );
+                })
+              : Container(),
+        ],
+      ),
+      floatingActionButton: canEdit
+          ? FloatingActionButton(
               onPressed: () {
                 if (!_formKey.currentState.validate()) {
                   return;
                 }
                 _formKey.currentState.save();
 
-                _addSoundsStore.favor ? _addSoundsStore.disfavorSound(sound) : _addSoundsStore.favorSound(sound);
+                if (sound != null) {
+                  _addSoundsStore.editSound(sound);
+                } else {
+                  _addSoundsStore.addSound();
+                }
+                Navigator.pop(context);
               },
-              icon: _addSoundsStore.favor ? Icon(Icons.star) : Icon(Icons.star_border),
-            ),
-          ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (!_formKey.currentState.validate()) {
-            return;
-          }
-          _formKey.currentState.save();
-
-          if (sound != null) {
-            _addSoundsStore.editSound(sound);
-          } else {
-            _addSoundsStore.addSound();
-          }
-          Navigator.pop(context);
-        },
-        child: const Icon(Icons.save),
-      ),
+              child: const Icon(Icons.save),
+            )
+          : Container(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(20),
@@ -113,6 +149,21 @@ class AddSoundPage extends StatelessWidget {
                     onSaved: (String value) {
                       _addSoundsStore.setSoundLink(value);
                     },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20),
+                  child: Observer(
+                    builder: (_) => Row(
+                      children: [
+                        Switch(
+                          activeColor: Theme.of(context).accentColor,
+                          value: _addSoundsStore?.public ?? true,
+                          onChanged: _addSoundsStore.setPublic,
+                        ),
+                        Text("Disponibilizar som pra comunidade."),
+                      ],
+                    ),
                   ),
                 ),
               ],

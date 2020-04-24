@@ -77,6 +77,40 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
     }, _$favorAtom, name: '${_$favorAtom.name}_set');
   }
 
+  final _$publicAtom = Atom(name: '_AddSoundStoreBase.public');
+
+  @override
+  bool get public {
+    _$publicAtom.context.enforceReadPolicy(_$publicAtom);
+    _$publicAtom.reportObserved();
+    return super.public;
+  }
+
+  @override
+  set public(bool value) {
+    _$publicAtom.context.conditionallyRunInAction(() {
+      super.public = value;
+      _$publicAtom.reportChanged();
+    }, _$publicAtom, name: '${_$publicAtom.name}_set');
+  }
+
+  final _$favorIsBusyAtom = Atom(name: '_AddSoundStoreBase.favorIsBusy');
+
+  @override
+  bool get favorIsBusy {
+    _$favorIsBusyAtom.context.enforceReadPolicy(_$favorIsBusyAtom);
+    _$favorIsBusyAtom.reportObserved();
+    return super.favorIsBusy;
+  }
+
+  @override
+  set favorIsBusy(bool value) {
+    _$favorIsBusyAtom.context.conditionallyRunInAction(() {
+      super.favorIsBusy = value;
+      _$favorIsBusyAtom.reportChanged();
+    }, _$favorIsBusyAtom, name: '${_$favorIsBusyAtom.name}_set');
+  }
+
   final _$favorSoundAsyncAction = AsyncAction('favorSound');
 
   @override
@@ -84,8 +118,25 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
     return _$favorSoundAsyncAction.run(() => super.favorSound(sound));
   }
 
+  final _$disfavorSoundAsyncAction = AsyncAction('disfavorSound');
+
+  @override
+  Future<void> disfavorSound(Sound sound) {
+    return _$disfavorSoundAsyncAction.run(() => super.disfavorSound(sound));
+  }
+
   final _$_AddSoundStoreBaseActionController =
       ActionController(name: '_AddSoundStoreBase');
+
+  @override
+  void setPublic(dynamic value) {
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    try {
+      return super.setPublic(value);
+    } finally {
+      _$_AddSoundStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setName(dynamic value) {
@@ -150,7 +201,7 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
   @override
   String toString() {
     final string =
-        'name: ${name.toString()},desc: ${desc.toString()},soundLink: ${soundLink.toString()},favor: ${favor.toString()}';
+        'name: ${name.toString()},desc: ${desc.toString()},soundLink: ${soundLink.toString()},favor: ${favor.toString()},public: ${public.toString()},favorIsBusy: ${favorIsBusy.toString()}';
     return '{$string}';
   }
 }

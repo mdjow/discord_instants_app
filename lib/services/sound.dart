@@ -36,9 +36,10 @@ Future<List<Sound>> getMyInstants({int page = 1, String search = ""}) async {
   try {
     final res = await Dio().get('http://${_mainStore.apiUrl}/instant/list?$params');
 
-    final data = extractListResponse(res.data);
-    return data
-            ?.map((s) => Sound.fromJson({
+    final data = extractResponse(res.data);
+    final list = data["instants"] ?? [];
+    return list
+            ?.map<Sound>((s) => Sound.fromJson({
                   "title": s["name"] ?? "",
                   "url": s["url"] ?? "",
                 }))

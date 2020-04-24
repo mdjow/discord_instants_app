@@ -18,14 +18,14 @@ class SoundsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (tab == 0 && !_loginStore.logged) {
-      return Container(
-        alignment: Alignment.center,
-        child: signInGoogle(),
-      );
-    }
-
     return Observer(builder: (_) {
+      if (tab == 0 && !_loginStore.logged) {
+        return Container(
+          alignment: Alignment.center,
+          child: signInGoogle(),
+        );
+      }
+
       if (sounds == null) {
         return Container(
           alignment: Alignment.center,

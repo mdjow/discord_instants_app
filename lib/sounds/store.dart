@@ -20,6 +20,7 @@ abstract class _SoundsStoreBase with Store {
 
   _SoundsStoreBase() {
     when((_) => _loginStore.logged, getMySounds);
+    when((_) => _loginStore.logged, getMyInstantsSounds);
     getCommunitySounds();
   }
   @observable
@@ -63,6 +64,20 @@ abstract class _SoundsStoreBase with Store {
       default:
         return [];
     }
+  }
+
+  @action
+  void setMySoundOrdem(int order, Sound sound) {
+    _fireStore
+        .collection(
+          "user",
+        )
+        .document(_loginStore.user.uid)
+        .collection(
+          "sounds",
+        )
+        .document(sound.documentID)
+        .updateData({"order": order});
   }
 
   @action
@@ -118,6 +133,7 @@ abstract class _SoundsStoreBase with Store {
           .collection(
             "sounds",
           )
+          .orderBy("order")
           .snapshots(),
     );
   }
@@ -138,6 +154,7 @@ abstract class _SoundsStoreBase with Store {
           .collection(
             "sounds",
           )
+          .orderBy("order")
           .where("title", isGreaterThanOrEqualTo: value)
           .getDocuments()
           .asStream(),
@@ -173,15 +190,15 @@ abstract class _SoundsStoreBase with Store {
   }
 
   @action
-  Future<void> playDiscord(String link) async {
-    playing = link;
-    await playOnDiscord(link);
+  Future<void> playDiscord(Sound sound) async {
+    playing = sound.url;
+    await playOnDiscord(sound.url);
     playing = "";
   }
 
   @action
-  Future<void> stopDiscord(String link) async {
+  Future<void> stopDiscord(Sound sound) async {
     playing = "";
-    await stopPlayingOnDiscord(link);
+    await stopPlayingOnDiscord(sound.url);
   }
 }

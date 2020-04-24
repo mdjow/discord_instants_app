@@ -1,5 +1,6 @@
 import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
 import 'package:discord_instants_app/drawer/page.dart';
+import 'package:discord_instants_app/sounds/sounds_reorder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -72,10 +73,27 @@ class _MySoundsPageState extends State<MySoundsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      endDrawer: Drawer(
+      drawer: Drawer(
         child: DrawerPage(),
       ),
       appBar: AppBar(
+        actions: [
+          Observer(
+            builder: (_) => _soundsStore.currentTab == 0
+                ? IconButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SoundsReorderPage(
+                          sounds: _soundsStore.mySounds ?? [],
+                        ),
+                      ),
+                    ),
+                    icon: Icon(Icons.format_list_numbered),
+                  )
+                : Container(),
+          ),
+        ],
         title: TextField(
           controller: _textEditController,
           decoration: InputDecoration(

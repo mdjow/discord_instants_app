@@ -27,6 +27,23 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
   List<Sound> get sounds =>
       (_$soundsComputed ??= Computed<List<Sound>>(() => super.sounds)).value;
 
+  final _$tabsAtom = Atom(name: '_SoundsStoreBase.tabs');
+
+  @override
+  List<String> get tabs {
+    _$tabsAtom.context.enforceReadPolicy(_$tabsAtom);
+    _$tabsAtom.reportObserved();
+    return super.tabs;
+  }
+
+  @override
+  set tabs(List<String> value) {
+    _$tabsAtom.context.conditionallyRunInAction(() {
+      super.tabs = value;
+      _$tabsAtom.reportChanged();
+    }, _$tabsAtom, name: '${_$tabsAtom.name}_set');
+  }
+
   final _$_mySoundsAtom = Atom(name: '_SoundsStoreBase._mySounds');
 
   @override
@@ -142,19 +159,29 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
   final _$playDiscordAsyncAction = AsyncAction('playDiscord');
 
   @override
-  Future<void> playDiscord(String link) {
-    return _$playDiscordAsyncAction.run(() => super.playDiscord(link));
+  Future<void> playDiscord(Sound sound) {
+    return _$playDiscordAsyncAction.run(() => super.playDiscord(sound));
   }
 
   final _$stopDiscordAsyncAction = AsyncAction('stopDiscord');
 
   @override
-  Future<void> stopDiscord(String link) {
-    return _$stopDiscordAsyncAction.run(() => super.stopDiscord(link));
+  Future<void> stopDiscord(Sound sound) {
+    return _$stopDiscordAsyncAction.run(() => super.stopDiscord(sound));
   }
 
   final _$_SoundsStoreBaseActionController =
       ActionController(name: '_SoundsStoreBase');
+
+  @override
+  void setMySoundOrdem(int order, Sound sound) {
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    try {
+      return super.setMySoundOrdem(order, sound);
+    } finally {
+      _$_SoundsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setTabSelected(int value) {
@@ -219,7 +246,7 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
   @override
   String toString() {
     final string =
-        'currentTab: ${currentTab.toString()},playing: ${playing.toString()},myIntantsSounds: ${myIntantsSounds.toString()},mySounds: ${mySounds.toString()},communitySounds: ${communitySounds.toString()},sounds: ${sounds.toString()}';
+        'tabs: ${tabs.toString()},currentTab: ${currentTab.toString()},playing: ${playing.toString()},myIntantsSounds: ${myIntantsSounds.toString()},mySounds: ${mySounds.toString()},communitySounds: ${communitySounds.toString()},sounds: ${sounds.toString()}';
     return '{$string}';
   }
 }
