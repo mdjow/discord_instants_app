@@ -174,6 +174,16 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
       ActionController(name: '_SoundsStoreBase');
 
   @override
+  void init() {
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    try {
+      return super.init();
+    } finally {
+      _$_SoundsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void setMySoundOrdem(int order, Sound sound) {
     final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
     try {

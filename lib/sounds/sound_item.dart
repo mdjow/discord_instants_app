@@ -1,10 +1,10 @@
-import 'package:discord_instants_app/sounds/store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
+import "package:discord_instants_app/sounds/store.dart";
+import "package:flutter/material.dart";
+import "package:flutter_mobx/flutter_mobx.dart";
+import "package:get_it/get_it.dart";
 
-import 'add/page.dart';
-import 'model.dart';
+import "add/page.dart";
+import "model.dart";
 
 class SoundItem extends StatelessWidget {
   final Color color;

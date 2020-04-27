@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'sounds/page.dart';
+import "package:flutter/material.dart";
+
+import "sounds/page.dart" show MySoundsPage;
 
 class HomePage extends StatelessWidget {
   HomePage();

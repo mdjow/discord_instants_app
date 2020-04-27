@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:flutter/material.dart";
+import "package:get_it/get_it.dart";
 
-import 'drawer/store.dart';
-import 'home.dart';
-import 'login/store.dart';
-import 'sounds/add/store.dart';
-import 'sounds/store.dart';
-import 'store.dart';
+import "drawer/store.dart";
+import "home.dart";
+import "login/store.dart";
+import "sounds/add/store.dart";
+import "sounds/store.dart";
+import "store.dart";
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,11 +1,11 @@
-import 'package:discord_instants_app/drawer/page.dart';
-import 'package:discord_instants_app/login/store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
+import "package:discord_instants_app/drawer/page.dart";
+import "package:discord_instants_app/login/store.dart";
+import "package:flutter/material.dart";
+import "package:flutter_mobx/flutter_mobx.dart";
+import "package:get_it/get_it.dart";
 
-import 'model.dart';
-import 'sound_item.dart';
+import "model.dart";
+import "sound_item.dart";
 
 class SoundsList extends StatelessWidget {
   final _loginStore = GetIt.I.get<LoginStore>();

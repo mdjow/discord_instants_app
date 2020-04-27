@@ -1,9 +1,9 @@
-import 'package:discord_instants_app/login/store.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
+import "package:discord_instants_app/login/store.dart";
+import "package:flutter/material.dart";
+import "package:flutter_mobx/flutter_mobx.dart";
+import "package:get_it/get_it.dart";
 
-import '../store.dart';
+import "../store.dart";
 
 class DrawerPage extends StatelessWidget {
   final _mainStore = GetIt.I.get<MainStore>();
@@ -13,6 +13,7 @@ class DrawerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _mainStore.getApi();
     return Observer(
       builder: (_) => Column(
         children: [

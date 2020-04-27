@@ -1,10 +1,10 @@
-import 'package:discord_instants_app/login/store.dart';
-import 'package:discord_instants_app/sounds/model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
+import "package:discord_instants_app/login/store.dart";
+import "package:discord_instants_app/sounds/model.dart";
+import "package:flutter/material.dart";
+import "package:flutter_mobx/flutter_mobx.dart";
+import "package:get_it/get_it.dart";
 
-import 'store.dart';
+import "store.dart";
 
 class AddSoundPage extends StatelessWidget {
   AddSoundPage({this.sound});

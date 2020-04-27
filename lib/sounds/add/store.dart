@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:discord_instants_app/login/store.dart';
-import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:discord_instants_app/login/store.dart";
+import "package:get_it/get_it.dart";
+import "package:mobx/mobx.dart";
 
-import '../model.dart';
-import '../store.dart';
+import "../model.dart";
+import "../store.dart";
 
-part 'store.g.dart';
+part "store.g.dart";
 
 class AddSoundStore = _AddSoundStoreBase with _$AddSoundStore;
 
@@ -86,6 +86,7 @@ abstract class _AddSoundStoreBase with Store {
       ...model,
       "ref": ref,
       "id": mySoundRef.documentID,
+      "order": 0,
     });
   }
 
@@ -141,6 +142,7 @@ abstract class _AddSoundStoreBase with Store {
       ...model,
       "id": ref.documentID,
       "ref": sound.ref ?? ref,
+      "order": 0,
     });
 
     favorIsBusy = false;

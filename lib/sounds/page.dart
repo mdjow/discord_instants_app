@@ -1,15 +1,15 @@
-import 'package:bubbled_navigation_bar/bubbled_navigation_bar.dart';
-import 'package:discord_instants_app/drawer/page.dart';
-import 'package:discord_instants_app/sounds/sounds_reorder.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
+import "package:bubbled_navigation_bar/bubbled_navigation_bar.dart";
+import "package:discord_instants_app/drawer/page.dart";
+import "package:discord_instants_app/sounds/sounds_reorder.dart";
+import "package:flutter/cupertino.dart";
+import "package:flutter/material.dart";
+import "package:flutter/rendering.dart";
+import "package:flutter_mobx/flutter_mobx.dart";
+import "package:get_it/get_it.dart";
 
-import 'add/page.dart';
-import 'sounds_list.dart';
-import 'store.dart';
+import "add/page.dart";
+import "sounds_list.dart";
+import "store.dart";
 
 class MySoundsPage extends StatefulWidget {
   final colors = [Colors.deepPurple, Colors.red, Colors.teal];
@@ -33,6 +33,7 @@ class _MySoundsPageState extends State<MySoundsPage> {
 
   @override
   void initState() {
+    _soundsStore.init();
     _menuPositionController = MenuPositionController(initPosition: 0);
 
     _pageController = PageController(initialPage: 0, keepPage: false, viewportFraction: 1.0);

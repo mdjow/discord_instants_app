@@ -1,14 +1,14 @@
-import 'dart:async';
+import "dart:async";
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:discord_instants_app/login/store.dart';
-import 'package:discord_instants_app/services/sound.dart';
-import 'package:get_it/get_it.dart';
-import 'package:mobx/mobx.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+import "package:discord_instants_app/login/store.dart";
+import "package:discord_instants_app/services/sound.dart";
+import "package:get_it/get_it.dart";
+import "package:mobx/mobx.dart";
 
-import 'model.dart';
+import "model.dart";
 
-part 'store.g.dart';
+part "store.g.dart";
 
 class SoundsStore = _SoundsStoreBase with _$SoundsStore;
 
@@ -18,11 +18,16 @@ abstract class _SoundsStoreBase with Store {
 
   Timer timerSearch;
 
-  _SoundsStoreBase() {
-    when((_) => _loginStore.logged, getMySounds);
-    when((_) => _loginStore.logged, getMyInstantsSounds);
+  @action
+  void init() {
+    when((_) => _loginStore.logged, () {
+      getMySounds();
+      getMyInstantsSounds();
+    });
+
     getCommunitySounds();
   }
+
   @observable
   List<String> tabs = ["Meus Sons", "Sons da comunidade", "Sons do MyInstants"];
 

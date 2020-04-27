@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:mobx/mobx.dart';
+import "package:firebase_auth/firebase_auth.dart";
+import "package:google_sign_in/google_sign_in.dart";
+import "package:mobx/mobx.dart";
 
-part 'store.g.dart';
+part "store.g.dart";
 
 class LoginStore = _LoginStoreBase with _$LoginStore;
 

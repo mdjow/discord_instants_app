@@ -26,17 +26,18 @@ mixin _$MainStore on _MainStoreBase, Store {
     }, _$apiUrlAtom, name: '${_$apiUrlAtom.name}_set');
   }
 
-  final _$_MainStoreBaseActionController =
-      ActionController(name: '_MainStoreBase');
+  final _$setApiUrlAsyncAction = AsyncAction('setApiUrl');
 
   @override
-  void setApiUrl(dynamic value) {
-    final _$actionInfo = _$_MainStoreBaseActionController.startAction();
-    try {
-      return super.setApiUrl(value);
-    } finally {
-      _$_MainStoreBaseActionController.endAction(_$actionInfo);
-    }
+  Future<void> setApiUrl(dynamic value) {
+    return _$setApiUrlAsyncAction.run(() => super.setApiUrl(value));
+  }
+
+  final _$getApiAsyncAction = AsyncAction('getApi');
+
+  @override
+  Future<void> getApi() {
+    return _$getApiAsyncAction.run(() => super.getApi());
   }
 
   @override

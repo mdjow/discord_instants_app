@@ -1,8 +1,8 @@
-import 'package:discord_instants_app/sounds/store.dart';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import "package:discord_instants_app/sounds/store.dart";
+import "package:flutter/material.dart";
+import "package:get_it/get_it.dart";
 
-import 'model.dart';
+import "model.dart";
 
 class SoundsReorderPage extends StatefulWidget {
   SoundsReorderPage({this.sounds});
@@ -15,13 +15,26 @@ class SoundsReorderPage extends StatefulWidget {
 class _SoundsReorderPageState extends State<SoundsReorderPage> {
   final _soundsStore = GetIt.I.get<SoundsStore>();
 
+  List<Sound> sounds = [];
+
+  @override
+  void initState() {
+    setState(() {
+      sounds = [...widget.sounds];
+    });
+
+    super.initState();
+  }
+
   void onReorder(int oldIndex, int newIndex) {
     if (newIndex > oldIndex) {
       newIndex--;
     }
 
-    final row = widget.sounds.removeAt(oldIndex);
-    widget.sounds.insert(newIndex, row);
+    final row = sounds.removeAt(oldIndex);
+    setState(() {
+      sounds.insert(newIndex, row);
+    });
 
     _soundsStore.setMySoundOrdem(newIndex, row);
   }
@@ -40,8 +53,8 @@ class _SoundsReorderPageState extends State<SoundsReorderPage> {
         scrollDirection: Axis.vertical,
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         children: List.generate(
-          widget.sounds.length,
-          (index) => ListViewCard(index: index, key: Key('$index'), listItems: widget.sounds),
+          sounds.length,
+          (index) => ListViewCard(index: index, key: Key("$index"), listItems: sounds),
         ),
       ),
     );
@@ -64,7 +77,7 @@ class _ListViewCard extends State<ListViewCard> {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(4),
-      color: Colors.white,
+      color: Theme.of(context).bottomAppBarColor,
       child: InkWell(
         splashColor: Colors.blue,
         child: Row(
@@ -78,11 +91,11 @@ class _ListViewCard extends State<ListViewCard> {
                     padding: const EdgeInsets.all(8.0),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      '${widget.listItems[widget.index].title}',
+                      "${widget.listItems[widget.index].title}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                       textAlign: TextAlign.left,
                       maxLines: 5,
@@ -92,7 +105,7 @@ class _ListViewCard extends State<ListViewCard> {
                     padding: const EdgeInsets.all(8.0),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      '${widget.listItems[widget.index].desc}',
+                      "${widget.listItems[widget.index].desc}",
                       style: TextStyle(fontWeight: FontWeight.normal, fontSize: 16),
                       textAlign: TextAlign.left,
                       maxLines: 5,
