@@ -169,10 +169,10 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
   }
 
   @override
-  void setFavor(DocumentReference ref) {
+  Future<void> setFavor(Sound soundRef) {
     final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
     try {
-      return super.setFavor(ref);
+      return super.setFavor(soundRef);
     } finally {
       _$_AddSoundStoreBaseActionController.endAction(_$actionInfo);
     }

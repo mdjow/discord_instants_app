@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:discord_instants_app/login/store.dart";
 import "package:get_it/get_it.dart";
@@ -14,6 +16,7 @@ abstract class _AddSoundStoreBase with Store {
   final _fireStore = GetIt.I.get<Firestore>();
   final _loginStore = GetIt.I.get<LoginStore>();
   final _soundStore = GetIt.I.get<SoundsStore>();
+  Timer timerFavor;
 
   @observable
   String name;
@@ -46,13 +49,16 @@ abstract class _AddSoundStoreBase with Store {
   void setSoundLink(value) => soundLink = value;
 
   @action
-  void setFavor(DocumentReference ref) {
-    if (ref == null) {
+  Future<void> setFavor(Sound soundRef) {
+    if (soundRef == null) {
       favor = false;
-      return;
+      return Future.value(false);
     }
-    var exist = _soundStore.mySounds.firstWhere((sound) => sound?.ref == ref, orElse: () => null);
+
+    var exist = _soundStore.mySounds.firstWhere((sound) => sound?.url == soundRef?.url, orElse: () => null);
     favor = exist == null ? false : true;
+
+    return Future.value(true);
   }
 
   @action
@@ -86,7 +92,7 @@ abstract class _AddSoundStoreBase with Store {
       ...model,
       "ref": ref,
       "id": mySoundRef.documentID,
-      "order": 0,
+      "order": _soundStore.mySounds.length,
     });
   }
 
@@ -142,12 +148,11 @@ abstract class _AddSoundStoreBase with Store {
       ...model,
       "id": ref.documentID,
       "ref": sound.ref ?? ref,
-      "order": 0,
+      "order": _soundStore.mySounds.length,
     });
 
+    favor = true;
     favorIsBusy = false;
-
-    setFavor(sound.ref ?? ref);
   }
 
   @action
@@ -158,17 +163,18 @@ abstract class _AddSoundStoreBase with Store {
 
     favorIsBusy = true;
 
-    await _fireStore
+    var res = _fireStore
         .collection("user")
         .document(
           _loginStore.user.uid,
         )
         .collection("sounds")
-        .document(sound.documentID)
-        .delete();
+        .where("url", isEqualTo: sound.url);
 
+    var doc = await res.getDocuments();
+    doc.documents.forEach((d) => d.reference.delete());
+
+    favor = false;
     favorIsBusy = false;
-
-    setFavor(sound.ref);
   }
 }

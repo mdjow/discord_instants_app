@@ -36,7 +36,11 @@ class _SoundsReorderPageState extends State<SoundsReorderPage> {
       sounds.insert(newIndex, row);
     });
 
-    _soundsStore.setMySoundOrdem(newIndex, row);
+    var i = newIndex < oldIndex ? newIndex : oldIndex;
+
+    for (; i <= sounds.length - 1; i++) {
+      _soundsStore.setMySoundOrdem(i, sounds[i]);
+    }
   }
 
   @override

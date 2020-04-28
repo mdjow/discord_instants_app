@@ -1,5 +1,6 @@
 import "package:bubbled_navigation_bar/bubbled_navigation_bar.dart";
 import "package:discord_instants_app/drawer/page.dart";
+import 'package:discord_instants_app/login/store.dart';
 import "package:discord_instants_app/sounds/sounds_reorder.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
@@ -25,6 +26,8 @@ class MySoundsPage extends StatefulWidget {
 
 class _MySoundsPageState extends State<MySoundsPage> {
   final _soundsStore = GetIt.I.get<SoundsStore>();
+  final _loginStore = GetIt.I.get<LoginStore>();
+
   final TextEditingController _textEditController = new TextEditingController();
 
   PageController _pageController;
@@ -80,7 +83,7 @@ class _MySoundsPageState extends State<MySoundsPage> {
       appBar: AppBar(
         actions: [
           Observer(
-            builder: (_) => _soundsStore.currentTab == 0
+            builder: (_) => (_loginStore.logged || _soundsStore.currentTab == 0)
                 ? IconButton(
                     onPressed: () => Navigator.push(
                       context,

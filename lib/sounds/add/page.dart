@@ -17,7 +17,7 @@ class AddSoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _addSoundsStore.setFavor(sound?.ref);
+    _addSoundsStore.setFavor(sound);
     _addSoundsStore.setPublic(!(sound?.private ?? false));
 
     final isEditing = sound != null;
@@ -31,23 +31,14 @@ class AddSoundPage extends StatelessWidget {
                   if (_addSoundsStore.favorIsBusy) {
                     return IconButton(
                       color: Colors.amber,
-                      onPressed: () {
-                        if (!_formKey.currentState.validate()) {
-                          return;
-                        }
-                        _formKey.currentState.save();
-
-                        _addSoundsStore.favor
-                            ? _addSoundsStore.disfavorSound(sound)
-                            : _addSoundsStore.favorSound(sound);
-                      },
+                      onPressed: null,
                       icon: Container(
                         height: 16,
                         width: 16,
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
                           backgroundColor: Colors.amber,
-                          valueColor: new AlwaysStoppedAnimation<Color>(Colors.amber[100]),
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.amber[100]),
                         ),
                       ),
                     );

@@ -8,6 +8,7 @@ class Sound {
     this.url,
     this.ref,
     this.private,
+    this.order,
   });
 
   factory Sound.fromJson(Map<String, dynamic> value) {
@@ -18,6 +19,7 @@ class Sound {
       url: value["url"],
       ref: value["ref"],
       private: value["private"],
+      order: value["order"],
     );
 
     return out;
@@ -29,4 +31,5 @@ class Sound {
   final String url;
   final DocumentReference ref;
   final bool private;
+  final int order;
 }
