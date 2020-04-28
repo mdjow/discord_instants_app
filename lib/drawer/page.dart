@@ -13,7 +13,6 @@ class DrawerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _mainStore.getApi();
     return Observer(
       builder: (_) => Column(
         children: [

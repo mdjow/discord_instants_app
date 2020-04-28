@@ -1,12 +1,18 @@
 import "package:flutter/material.dart";
+import "package:get_it/get_it.dart";
 
-import "sounds/page.dart" show MySoundsPage;
+import "sounds/page.dart";
+import "store.dart";
 
 class HomePage extends StatelessWidget {
   HomePage();
 
   @override
   Widget build(BuildContext context) {
+    final _mainStore = GetIt.I.get<MainStore>();
+
+    _mainStore.getApi();
+
     return MaterialApp(
       themeMode: ThemeMode.dark,
       darkTheme: ThemeData(
