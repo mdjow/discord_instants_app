@@ -1,5 +1,6 @@
 import "dart:async";
 
+import 'package:audioplayer/audioplayer.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:discord_instants_app/login/store.dart";
 import "package:discord_instants_app/services/sound.dart";
@@ -15,11 +16,19 @@ class SoundsStore = _SoundsStoreBase with _$SoundsStore;
 abstract class _SoundsStoreBase with Store {
   final _fireStore = GetIt.I.get<Firestore>();
   final _loginStore = GetIt.I.get<LoginStore>();
+  final _audioPlugin = GetIt.I.get<AudioPlayer>();
 
   Timer timerSearch;
 
   @action
   void init() {
+    _playerStateChanged = _audioPlugin.onPlayerStateChanged.asObservable();
+    _playerStateChanged.listen((s) {
+      if (s == AudioPlayerState.STOPPED) {
+        localPlaying = "";
+      }
+    });
+
     when((_) => _loginStore.logged, () {
       getMySounds();
       getMyInstantsSounds();
@@ -38,13 +47,16 @@ abstract class _SoundsStoreBase with Store {
   ObservableStream<QuerySnapshot> _communitySounds;
 
   @observable
-  List<Sound> _myInstantsSounds;
+  ObservableStream<AudioPlayerState> _playerStateChanged;
 
   @observable
   int currentTab = 0;
 
   @observable
   String playing = "";
+
+  @observable
+  String localPlaying = "";
 
   @observable
   List<Sound> myIntantsSounds;
@@ -69,6 +81,25 @@ abstract class _SoundsStoreBase with Store {
       default:
         return [];
     }
+  }
+
+  @computed
+  AudioPlayerState get playerStateChanged => _playerStateChanged.value;
+
+  @action
+  void playLocalSound(String url) {
+    localPlaying = url;
+
+    if (playerStateChanged == AudioPlayerState.PLAYING) {
+      _audioPlugin.stop();
+    }
+    _audioPlugin.play(url);
+  }
+
+  @action
+  void stopLocalSound() {
+    _audioPlugin.stop();
+    localPlaying = "";
   }
 
   @action

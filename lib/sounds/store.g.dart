@@ -26,6 +26,12 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
   @override
   List<Sound> get sounds =>
       (_$soundsComputed ??= Computed<List<Sound>>(() => super.sounds)).value;
+  Computed<AudioPlayerState> _$playerStateChangedComputed;
+
+  @override
+  AudioPlayerState get playerStateChanged => (_$playerStateChangedComputed ??=
+          Computed<AudioPlayerState>(() => super.playerStateChanged))
+      .value;
 
   final _$tabsAtom = Atom(name: '_SoundsStoreBase.tabs');
 
@@ -79,22 +85,24 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
     }, _$_communitySoundsAtom, name: '${_$_communitySoundsAtom.name}_set');
   }
 
-  final _$_myInstantsSoundsAtom =
-      Atom(name: '_SoundsStoreBase._myInstantsSounds');
+  final _$_playerStateChangedAtom =
+      Atom(name: '_SoundsStoreBase._playerStateChanged');
 
   @override
-  List<Sound> get _myInstantsSounds {
-    _$_myInstantsSoundsAtom.context.enforceReadPolicy(_$_myInstantsSoundsAtom);
-    _$_myInstantsSoundsAtom.reportObserved();
-    return super._myInstantsSounds;
+  ObservableStream<AudioPlayerState> get _playerStateChanged {
+    _$_playerStateChangedAtom.context
+        .enforceReadPolicy(_$_playerStateChangedAtom);
+    _$_playerStateChangedAtom.reportObserved();
+    return super._playerStateChanged;
   }
 
   @override
-  set _myInstantsSounds(List<Sound> value) {
-    _$_myInstantsSoundsAtom.context.conditionallyRunInAction(() {
-      super._myInstantsSounds = value;
-      _$_myInstantsSoundsAtom.reportChanged();
-    }, _$_myInstantsSoundsAtom, name: '${_$_myInstantsSoundsAtom.name}_set');
+  set _playerStateChanged(ObservableStream<AudioPlayerState> value) {
+    _$_playerStateChangedAtom.context.conditionallyRunInAction(() {
+      super._playerStateChanged = value;
+      _$_playerStateChangedAtom.reportChanged();
+    }, _$_playerStateChangedAtom,
+        name: '${_$_playerStateChangedAtom.name}_set');
   }
 
   final _$currentTabAtom = Atom(name: '_SoundsStoreBase.currentTab');
@@ -129,6 +137,23 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
       super.playing = value;
       _$playingAtom.reportChanged();
     }, _$playingAtom, name: '${_$playingAtom.name}_set');
+  }
+
+  final _$localPlayingAtom = Atom(name: '_SoundsStoreBase.localPlaying');
+
+  @override
+  String get localPlaying {
+    _$localPlayingAtom.context.enforceReadPolicy(_$localPlayingAtom);
+    _$localPlayingAtom.reportObserved();
+    return super.localPlaying;
+  }
+
+  @override
+  set localPlaying(String value) {
+    _$localPlayingAtom.context.conditionallyRunInAction(() {
+      super.localPlaying = value;
+      _$localPlayingAtom.reportChanged();
+    }, _$localPlayingAtom, name: '${_$localPlayingAtom.name}_set');
   }
 
   final _$myIntantsSoundsAtom = Atom(name: '_SoundsStoreBase.myIntantsSounds');
@@ -178,6 +203,26 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
     final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
     try {
       return super.init();
+    } finally {
+      _$_SoundsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void playLocalSound(String url) {
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    try {
+      return super.playLocalSound(url);
+    } finally {
+      _$_SoundsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void stopLocalSound() {
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    try {
+      return super.stopLocalSound();
     } finally {
       _$_SoundsStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -256,7 +301,7 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
   @override
   String toString() {
     final string =
-        'tabs: ${tabs.toString()},currentTab: ${currentTab.toString()},playing: ${playing.toString()},myIntantsSounds: ${myIntantsSounds.toString()},mySounds: ${mySounds.toString()},communitySounds: ${communitySounds.toString()},sounds: ${sounds.toString()}';
+        'tabs: ${tabs.toString()},currentTab: ${currentTab.toString()},playing: ${playing.toString()},localPlaying: ${localPlaying.toString()},myIntantsSounds: ${myIntantsSounds.toString()},mySounds: ${mySounds.toString()},communitySounds: ${communitySounds.toString()},sounds: ${sounds.toString()},playerStateChanged: ${playerStateChanged.toString()}';
     return '{$string}';
   }
 }

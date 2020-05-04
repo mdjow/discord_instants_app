@@ -1,3 +1,4 @@
+import 'package:audioplayer/audioplayer.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:flutter/material.dart";
 import "package:get_it/get_it.dart";
@@ -14,8 +15,10 @@ void main() {
 
   GetIt getIt = GetIt.I;
 
-  getIt.registerSingleton<LoginStore>(LoginStore());
+  getIt.registerSingleton<AudioPlayer>(AudioPlayer());
   getIt.registerSingleton<Firestore>(Firestore());
+
+  getIt.registerSingleton<LoginStore>(LoginStore());
   getIt.registerSingleton<SoundsStore>(SoundsStore());
   getIt.registerSingleton<AddSoundStore>(AddSoundStore());
   getIt.registerSingleton<DrawerStore>(DrawerStore());

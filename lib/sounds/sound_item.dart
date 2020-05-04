@@ -17,8 +17,9 @@ class SoundItem extends StatelessWidget {
     final _soundsStore = GetIt.I.get<SoundsStore>();
 
     return RaisedButton(
-      color: color,
-      onLongPress: () => Navigator.push(
+      // color: color,
+      color: Theme.of(context).cardColor,
+      onPressed: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AddSoundPage(
@@ -31,38 +32,62 @@ class SoundItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         side: BorderSide(),
       ),
-      onPressed: () =>
-          _soundsStore.playing == sound.url ? _soundsStore.stopDiscord(sound) : _soundsStore.playDiscord(sound),
       textColor: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              sound.title.toUpperCase(),
-              style: TextStyle(fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
+          Text(
+            sound.title.toUpperCase(),
+            style: TextStyle(fontSize: 16),
+            textAlign: TextAlign.center,
           ),
-          Observer(
-            builder: (_) => _soundsStore.playing == sound.url
-                ? Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.stop,
-                      size: 40,
-                    ),
-                  )
-                : Expanded(
-                    flex: 1,
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: 40,
-                    ),
-                  ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                child: Observer(
+                  builder: (_) => _soundsStore.playing == sound.url
+                      ? IconButton(
+                          color: Colors.red,
+                          iconSize: 30,
+                          icon: Icon(
+                            Icons.stop,
+                          ),
+                          onPressed: () => _soundsStore.stopDiscord(sound),
+                        )
+                      : IconButton(
+                          iconSize: 30,
+                          color: Colors.deepPurpleAccent,
+                          icon: Icon(
+                            Icons.send,
+                          ),
+                          onPressed: () => _soundsStore.playDiscord(sound),
+                        ),
+                ),
+              ),
+              Observer(
+                builder: (_) => _soundsStore.localPlaying == sound.url
+                    ? IconButton(
+                        color: Colors.red,
+                        iconSize: 30,
+                        icon: Icon(
+                          Icons.stop,
+                        ),
+                        onPressed: () => _soundsStore.stopLocalSound(),
+                      )
+                    : IconButton(
+                        iconSize: 30,
+                        color: Colors.green,
+                        icon: Icon(
+                          Icons.play_circle_outline,
+                        ),
+                        onPressed: () => _soundsStore.playLocalSound(sound.url),
+                      ),
+              ),
+            ],
           ),
         ],
       ),
