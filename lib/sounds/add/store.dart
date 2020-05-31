@@ -49,7 +49,10 @@ abstract class _AddSoundStoreBase with Store {
   void setSoundLink(value) => soundLink = value;
 
   @action
-  Future<void> setFavor(Sound soundRef) {
+  void setFavor(bool value) => favor = value;
+
+  @action
+  Future<void> isFavorite(Sound soundRef) {
     if (soundRef == null) {
       favor = false;
       return Future.value(false);

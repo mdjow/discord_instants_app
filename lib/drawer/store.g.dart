@@ -11,7 +11,8 @@ part of 'store.dart';
 mixin _$DrawerStore on _DrawerStoreBase, Store {
   @override
   String toString() {
-    final string = '';
-    return '{$string}';
+    return '''
+
+    ''';
   }
 }

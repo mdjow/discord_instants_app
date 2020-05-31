@@ -13,112 +13,101 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   String get name {
-    _$nameAtom.context.enforceReadPolicy(_$nameAtom);
-    _$nameAtom.reportObserved();
+    _$nameAtom.reportRead();
     return super.name;
   }
 
   @override
   set name(String value) {
-    _$nameAtom.context.conditionallyRunInAction(() {
+    _$nameAtom.reportWrite(value, super.name, () {
       super.name = value;
-      _$nameAtom.reportChanged();
-    }, _$nameAtom, name: '${_$nameAtom.name}_set');
+    });
   }
 
   final _$descAtom = Atom(name: '_AddSoundStoreBase.desc');
 
   @override
   String get desc {
-    _$descAtom.context.enforceReadPolicy(_$descAtom);
-    _$descAtom.reportObserved();
+    _$descAtom.reportRead();
     return super.desc;
   }
 
   @override
   set desc(String value) {
-    _$descAtom.context.conditionallyRunInAction(() {
+    _$descAtom.reportWrite(value, super.desc, () {
       super.desc = value;
-      _$descAtom.reportChanged();
-    }, _$descAtom, name: '${_$descAtom.name}_set');
+    });
   }
 
   final _$soundLinkAtom = Atom(name: '_AddSoundStoreBase.soundLink');
 
   @override
   String get soundLink {
-    _$soundLinkAtom.context.enforceReadPolicy(_$soundLinkAtom);
-    _$soundLinkAtom.reportObserved();
+    _$soundLinkAtom.reportRead();
     return super.soundLink;
   }
 
   @override
   set soundLink(String value) {
-    _$soundLinkAtom.context.conditionallyRunInAction(() {
+    _$soundLinkAtom.reportWrite(value, super.soundLink, () {
       super.soundLink = value;
-      _$soundLinkAtom.reportChanged();
-    }, _$soundLinkAtom, name: '${_$soundLinkAtom.name}_set');
+    });
   }
 
   final _$favorAtom = Atom(name: '_AddSoundStoreBase.favor');
 
   @override
   bool get favor {
-    _$favorAtom.context.enforceReadPolicy(_$favorAtom);
-    _$favorAtom.reportObserved();
+    _$favorAtom.reportRead();
     return super.favor;
   }
 
   @override
   set favor(bool value) {
-    _$favorAtom.context.conditionallyRunInAction(() {
+    _$favorAtom.reportWrite(value, super.favor, () {
       super.favor = value;
-      _$favorAtom.reportChanged();
-    }, _$favorAtom, name: '${_$favorAtom.name}_set');
+    });
   }
 
   final _$publicAtom = Atom(name: '_AddSoundStoreBase.public');
 
   @override
   bool get public {
-    _$publicAtom.context.enforceReadPolicy(_$publicAtom);
-    _$publicAtom.reportObserved();
+    _$publicAtom.reportRead();
     return super.public;
   }
 
   @override
   set public(bool value) {
-    _$publicAtom.context.conditionallyRunInAction(() {
+    _$publicAtom.reportWrite(value, super.public, () {
       super.public = value;
-      _$publicAtom.reportChanged();
-    }, _$publicAtom, name: '${_$publicAtom.name}_set');
+    });
   }
 
   final _$favorIsBusyAtom = Atom(name: '_AddSoundStoreBase.favorIsBusy');
 
   @override
   bool get favorIsBusy {
-    _$favorIsBusyAtom.context.enforceReadPolicy(_$favorIsBusyAtom);
-    _$favorIsBusyAtom.reportObserved();
+    _$favorIsBusyAtom.reportRead();
     return super.favorIsBusy;
   }
 
   @override
   set favorIsBusy(bool value) {
-    _$favorIsBusyAtom.context.conditionallyRunInAction(() {
+    _$favorIsBusyAtom.reportWrite(value, super.favorIsBusy, () {
       super.favorIsBusy = value;
-      _$favorIsBusyAtom.reportChanged();
-    }, _$favorIsBusyAtom, name: '${_$favorIsBusyAtom.name}_set');
+    });
   }
 
-  final _$favorSoundAsyncAction = AsyncAction('favorSound');
+  final _$favorSoundAsyncAction = AsyncAction('_AddSoundStoreBase.favorSound');
 
   @override
   Future<void> favorSound(Sound sound) {
     return _$favorSoundAsyncAction.run(() => super.favorSound(sound));
   }
 
-  final _$disfavorSoundAsyncAction = AsyncAction('disfavorSound');
+  final _$disfavorSoundAsyncAction =
+      AsyncAction('_AddSoundStoreBase.disfavorSound');
 
   @override
   Future<void> disfavorSound(Sound sound) {
@@ -130,7 +119,8 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   void setPublic(dynamic value) {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.setPublic');
     try {
       return super.setPublic(value);
     } finally {
@@ -140,7 +130,8 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   void setName(dynamic value) {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.setName');
     try {
       return super.setName(value);
     } finally {
@@ -150,7 +141,8 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   void setDesc(dynamic value) {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.setDesc');
     try {
       return super.setDesc(value);
     } finally {
@@ -160,7 +152,8 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   void setSoundLink(dynamic value) {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.setSoundLink');
     try {
       return super.setSoundLink(value);
     } finally {
@@ -169,10 +162,22 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
   }
 
   @override
-  Future<void> setFavor(Sound soundRef) {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+  void setFavor(bool value) {
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.setFavor');
     try {
-      return super.setFavor(soundRef);
+      return super.setFavor(value);
+    } finally {
+      _$_AddSoundStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  Future<void> isFavorite(Sound soundRef) {
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.isFavorite');
+    try {
+      return super.isFavorite(soundRef);
     } finally {
       _$_AddSoundStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -180,7 +185,8 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   void addSound() {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.addSound');
     try {
       return super.addSound();
     } finally {
@@ -190,7 +196,8 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   void editSound(Sound sound) {
-    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction();
+    final _$actionInfo = _$_AddSoundStoreBaseActionController.startAction(
+        name: '_AddSoundStoreBase.editSound');
     try {
       return super.editSound(sound);
     } finally {
@@ -200,8 +207,13 @@ mixin _$AddSoundStore on _AddSoundStoreBase, Store {
 
   @override
   String toString() {
-    final string =
-        'name: ${name.toString()},desc: ${desc.toString()},soundLink: ${soundLink.toString()},favor: ${favor.toString()},public: ${public.toString()},favorIsBusy: ${favorIsBusy.toString()}';
-    return '{$string}';
+    return '''
+name: ${name},
+desc: ${desc},
+soundLink: ${soundLink},
+favor: ${favor},
+public: ${public},
+favorIsBusy: ${favorIsBusy}
+    ''';
   }
 }

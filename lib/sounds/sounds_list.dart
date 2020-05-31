@@ -42,7 +42,12 @@ class SoundsList extends StatelessWidget {
 
       return GridView.count(
         primary: false,
-        padding: const EdgeInsets.all(2),
+        padding: EdgeInsets.only(
+          top: 2,
+          left: 2,
+          right: 2,
+          bottom: (tab == 0 && (sounds.length % 3) == 0) ? 80 : 2,
+        ),
         crossAxisSpacing: 1,
         mainAxisSpacing: 1,
         crossAxisCount: 3,

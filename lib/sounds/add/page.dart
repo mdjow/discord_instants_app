@@ -17,11 +17,14 @@ class AddSoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _addSoundsStore.setFavor(sound);
+    _addSoundsStore.isFavorite(sound);
     _addSoundsStore.setPublic(!(sound?.private ?? false));
 
     final isEditing = sound != null;
-    final canEdit = sound?.private ?? false || (!isEditing || sound?.ref != null);
+    final canEdit = sound?.ref != null;
+    if (!isEditing) {
+      _addSoundsStore.setFavor(true);
+    }
 
     return Scaffold(
       appBar: AppBar(

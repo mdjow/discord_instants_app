@@ -13,27 +13,25 @@ mixin _$MainStore on _MainStoreBase, Store {
 
   @override
   String get apiUrl {
-    _$apiUrlAtom.context.enforceReadPolicy(_$apiUrlAtom);
-    _$apiUrlAtom.reportObserved();
+    _$apiUrlAtom.reportRead();
     return super.apiUrl;
   }
 
   @override
   set apiUrl(String value) {
-    _$apiUrlAtom.context.conditionallyRunInAction(() {
+    _$apiUrlAtom.reportWrite(value, super.apiUrl, () {
       super.apiUrl = value;
-      _$apiUrlAtom.reportChanged();
-    }, _$apiUrlAtom, name: '${_$apiUrlAtom.name}_set');
+    });
   }
 
-  final _$setApiUrlAsyncAction = AsyncAction('setApiUrl');
+  final _$setApiUrlAsyncAction = AsyncAction('_MainStoreBase.setApiUrl');
 
   @override
   Future<void> setApiUrl(dynamic value) {
     return _$setApiUrlAsyncAction.run(() => super.setApiUrl(value));
   }
 
-  final _$getApiAsyncAction = AsyncAction('getApi');
+  final _$getApiAsyncAction = AsyncAction('_MainStoreBase.getApi');
 
   @override
   Future<void> getApi() {
@@ -42,7 +40,8 @@ mixin _$MainStore on _MainStoreBase, Store {
 
   @override
   String toString() {
-    final string = 'apiUrl: ${apiUrl.toString()}';
-    return '{$string}';
+    return '''
+apiUrl: ${apiUrl}
+    ''';
   }
 }

@@ -13,58 +13,59 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   List<Sound> get mySounds =>
-      (_$mySoundsComputed ??= Computed<List<Sound>>(() => super.mySounds))
+      (_$mySoundsComputed ??= Computed<List<Sound>>(() => super.mySounds,
+              name: '_SoundsStoreBase.mySounds'))
           .value;
   Computed<List<Sound>> _$communitySoundsComputed;
 
   @override
   List<Sound> get communitySounds => (_$communitySoundsComputed ??=
-          Computed<List<Sound>>(() => super.communitySounds))
+          Computed<List<Sound>>(() => super.communitySounds,
+              name: '_SoundsStoreBase.communitySounds'))
       .value;
   Computed<List<Sound>> _$soundsComputed;
 
   @override
   List<Sound> get sounds =>
-      (_$soundsComputed ??= Computed<List<Sound>>(() => super.sounds)).value;
+      (_$soundsComputed ??= Computed<List<Sound>>(() => super.sounds,
+              name: '_SoundsStoreBase.sounds'))
+          .value;
   Computed<AudioPlayerState> _$playerStateChangedComputed;
 
   @override
   AudioPlayerState get playerStateChanged => (_$playerStateChangedComputed ??=
-          Computed<AudioPlayerState>(() => super.playerStateChanged))
+          Computed<AudioPlayerState>(() => super.playerStateChanged,
+              name: '_SoundsStoreBase.playerStateChanged'))
       .value;
 
   final _$tabsAtom = Atom(name: '_SoundsStoreBase.tabs');
 
   @override
   List<String> get tabs {
-    _$tabsAtom.context.enforceReadPolicy(_$tabsAtom);
-    _$tabsAtom.reportObserved();
+    _$tabsAtom.reportRead();
     return super.tabs;
   }
 
   @override
   set tabs(List<String> value) {
-    _$tabsAtom.context.conditionallyRunInAction(() {
+    _$tabsAtom.reportWrite(value, super.tabs, () {
       super.tabs = value;
-      _$tabsAtom.reportChanged();
-    }, _$tabsAtom, name: '${_$tabsAtom.name}_set');
+    });
   }
 
   final _$_mySoundsAtom = Atom(name: '_SoundsStoreBase._mySounds');
 
   @override
   ObservableStream<QuerySnapshot> get _mySounds {
-    _$_mySoundsAtom.context.enforceReadPolicy(_$_mySoundsAtom);
-    _$_mySoundsAtom.reportObserved();
+    _$_mySoundsAtom.reportRead();
     return super._mySounds;
   }
 
   @override
   set _mySounds(ObservableStream<QuerySnapshot> value) {
-    _$_mySoundsAtom.context.conditionallyRunInAction(() {
+    _$_mySoundsAtom.reportWrite(value, super._mySounds, () {
       super._mySounds = value;
-      _$_mySoundsAtom.reportChanged();
-    }, _$_mySoundsAtom, name: '${_$_mySoundsAtom.name}_set');
+    });
   }
 
   final _$_communitySoundsAtom =
@@ -72,17 +73,15 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   ObservableStream<QuerySnapshot> get _communitySounds {
-    _$_communitySoundsAtom.context.enforceReadPolicy(_$_communitySoundsAtom);
-    _$_communitySoundsAtom.reportObserved();
+    _$_communitySoundsAtom.reportRead();
     return super._communitySounds;
   }
 
   @override
   set _communitySounds(ObservableStream<QuerySnapshot> value) {
-    _$_communitySoundsAtom.context.conditionallyRunInAction(() {
+    _$_communitySoundsAtom.reportWrite(value, super._communitySounds, () {
       super._communitySounds = value;
-      _$_communitySoundsAtom.reportChanged();
-    }, _$_communitySoundsAtom, name: '${_$_communitySoundsAtom.name}_set');
+    });
   }
 
   final _$_playerStateChangedAtom =
@@ -90,90 +89,79 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   ObservableStream<AudioPlayerState> get _playerStateChanged {
-    _$_playerStateChangedAtom.context
-        .enforceReadPolicy(_$_playerStateChangedAtom);
-    _$_playerStateChangedAtom.reportObserved();
+    _$_playerStateChangedAtom.reportRead();
     return super._playerStateChanged;
   }
 
   @override
   set _playerStateChanged(ObservableStream<AudioPlayerState> value) {
-    _$_playerStateChangedAtom.context.conditionallyRunInAction(() {
+    _$_playerStateChangedAtom.reportWrite(value, super._playerStateChanged, () {
       super._playerStateChanged = value;
-      _$_playerStateChangedAtom.reportChanged();
-    }, _$_playerStateChangedAtom,
-        name: '${_$_playerStateChangedAtom.name}_set');
+    });
   }
 
   final _$currentTabAtom = Atom(name: '_SoundsStoreBase.currentTab');
 
   @override
-  int get currentTab {
-    _$currentTabAtom.context.enforceReadPolicy(_$currentTabAtom);
-    _$currentTabAtom.reportObserved();
+  Pages get currentTab {
+    _$currentTabAtom.reportRead();
     return super.currentTab;
   }
 
   @override
-  set currentTab(int value) {
-    _$currentTabAtom.context.conditionallyRunInAction(() {
+  set currentTab(Pages value) {
+    _$currentTabAtom.reportWrite(value, super.currentTab, () {
       super.currentTab = value;
-      _$currentTabAtom.reportChanged();
-    }, _$currentTabAtom, name: '${_$currentTabAtom.name}_set');
+    });
   }
 
   final _$playingAtom = Atom(name: '_SoundsStoreBase.playing');
 
   @override
   String get playing {
-    _$playingAtom.context.enforceReadPolicy(_$playingAtom);
-    _$playingAtom.reportObserved();
+    _$playingAtom.reportRead();
     return super.playing;
   }
 
   @override
   set playing(String value) {
-    _$playingAtom.context.conditionallyRunInAction(() {
+    _$playingAtom.reportWrite(value, super.playing, () {
       super.playing = value;
-      _$playingAtom.reportChanged();
-    }, _$playingAtom, name: '${_$playingAtom.name}_set');
+    });
   }
 
   final _$localPlayingAtom = Atom(name: '_SoundsStoreBase.localPlaying');
 
   @override
   String get localPlaying {
-    _$localPlayingAtom.context.enforceReadPolicy(_$localPlayingAtom);
-    _$localPlayingAtom.reportObserved();
+    _$localPlayingAtom.reportRead();
     return super.localPlaying;
   }
 
   @override
   set localPlaying(String value) {
-    _$localPlayingAtom.context.conditionallyRunInAction(() {
+    _$localPlayingAtom.reportWrite(value, super.localPlaying, () {
       super.localPlaying = value;
-      _$localPlayingAtom.reportChanged();
-    }, _$localPlayingAtom, name: '${_$localPlayingAtom.name}_set');
+    });
   }
 
   final _$myIntantsSoundsAtom = Atom(name: '_SoundsStoreBase.myIntantsSounds');
 
   @override
   List<Sound> get myIntantsSounds {
-    _$myIntantsSoundsAtom.context.enforceReadPolicy(_$myIntantsSoundsAtom);
-    _$myIntantsSoundsAtom.reportObserved();
+    _$myIntantsSoundsAtom.reportRead();
     return super.myIntantsSounds;
   }
 
   @override
   set myIntantsSounds(List<Sound> value) {
-    _$myIntantsSoundsAtom.context.conditionallyRunInAction(() {
+    _$myIntantsSoundsAtom.reportWrite(value, super.myIntantsSounds, () {
       super.myIntantsSounds = value;
-      _$myIntantsSoundsAtom.reportChanged();
-    }, _$myIntantsSoundsAtom, name: '${_$myIntantsSoundsAtom.name}_set');
+    });
   }
 
-  final _$getMyInstantsSoundsAsyncAction = AsyncAction('getMyInstantsSounds');
+  final _$getMyInstantsSoundsAsyncAction =
+      AsyncAction('_SoundsStoreBase.getMyInstantsSounds');
 
   @override
   Future<void> getMyInstantsSounds({String value = "", int page = 1}) {
@@ -181,14 +169,14 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
         .run(() => super.getMyInstantsSounds(value: value, page: page));
   }
 
-  final _$playDiscordAsyncAction = AsyncAction('playDiscord');
+  final _$playDiscordAsyncAction = AsyncAction('_SoundsStoreBase.playDiscord');
 
   @override
   Future<void> playDiscord(Sound sound) {
     return _$playDiscordAsyncAction.run(() => super.playDiscord(sound));
   }
 
-  final _$stopDiscordAsyncAction = AsyncAction('stopDiscord');
+  final _$stopDiscordAsyncAction = AsyncAction('_SoundsStoreBase.stopDiscord');
 
   @override
   Future<void> stopDiscord(Sound sound) {
@@ -200,7 +188,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void init() {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.init');
     try {
       return super.init();
     } finally {
@@ -210,7 +199,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void playLocalSound(String url) {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.playLocalSound');
     try {
       return super.playLocalSound(url);
     } finally {
@@ -220,7 +210,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void stopLocalSound() {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.stopLocalSound');
     try {
       return super.stopLocalSound();
     } finally {
@@ -230,7 +221,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void setMySoundOrdem(int order, Sound sound) {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.setMySoundOrdem');
     try {
       return super.setMySoundOrdem(order, sound);
     } finally {
@@ -239,8 +231,9 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
   }
 
   @override
-  void setTabSelected(int value) {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+  void setTabSelected(Pages value) {
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.setTabSelected');
     try {
       return super.setTabSelected(value);
     } finally {
@@ -250,7 +243,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void getCommunitySounds() {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.getCommunitySounds');
     try {
       return super.getCommunitySounds();
     } finally {
@@ -260,7 +254,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void searchCommunitySounds(String value) {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.searchCommunitySounds');
     try {
       return super.searchCommunitySounds(value);
     } finally {
@@ -270,7 +265,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void getMySounds() {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.getMySounds');
     try {
       return super.getMySounds();
     } finally {
@@ -280,7 +276,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void searchMySounds(String value) {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.searchMySounds');
     try {
       return super.searchMySounds(value);
     } finally {
@@ -290,7 +287,8 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   void searchSound(String value) {
-    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction();
+    final _$actionInfo = _$_SoundsStoreBaseActionController.startAction(
+        name: '_SoundsStoreBase.searchSound');
     try {
       return super.searchSound(value);
     } finally {
@@ -300,8 +298,16 @@ mixin _$SoundsStore on _SoundsStoreBase, Store {
 
   @override
   String toString() {
-    final string =
-        'tabs: ${tabs.toString()},currentTab: ${currentTab.toString()},playing: ${playing.toString()},localPlaying: ${localPlaying.toString()},myIntantsSounds: ${myIntantsSounds.toString()},mySounds: ${mySounds.toString()},communitySounds: ${communitySounds.toString()},sounds: ${sounds.toString()},playerStateChanged: ${playerStateChanged.toString()}';
-    return '{$string}';
+    return '''
+tabs: ${tabs},
+currentTab: ${currentTab},
+playing: ${playing},
+localPlaying: ${localPlaying},
+myIntantsSounds: ${myIntantsSounds},
+mySounds: ${mySounds},
+communitySounds: ${communitySounds},
+sounds: ${sounds},
+playerStateChanged: ${playerStateChanged}
+    ''';
   }
 }

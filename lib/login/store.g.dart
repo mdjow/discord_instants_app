@@ -12,51 +12,48 @@ mixin _$LoginStore on _LoginStoreBase, Store {
   Computed<bool> _$loggedComputed;
 
   @override
-  bool get logged =>
-      (_$loggedComputed ??= Computed<bool>(() => super.logged)).value;
+  bool get logged => (_$loggedComputed ??=
+          Computed<bool>(() => super.logged, name: '_LoginStoreBase.logged'))
+      .value;
 
   final _$userAtom = Atom(name: '_LoginStoreBase.user');
 
   @override
   FirebaseUser get user {
-    _$userAtom.context.enforceReadPolicy(_$userAtom);
-    _$userAtom.reportObserved();
+    _$userAtom.reportRead();
     return super.user;
   }
 
   @override
   set user(FirebaseUser value) {
-    _$userAtom.context.conditionallyRunInAction(() {
+    _$userAtom.reportWrite(value, super.user, () {
       super.user = value;
-      _$userAtom.reportChanged();
-    }, _$userAtom, name: '${_$userAtom.name}_set');
+    });
   }
 
   final _$credentialAtom = Atom(name: '_LoginStoreBase.credential');
 
   @override
   AuthCredential get credential {
-    _$credentialAtom.context.enforceReadPolicy(_$credentialAtom);
-    _$credentialAtom.reportObserved();
+    _$credentialAtom.reportRead();
     return super.credential;
   }
 
   @override
   set credential(AuthCredential value) {
-    _$credentialAtom.context.conditionallyRunInAction(() {
+    _$credentialAtom.reportWrite(value, super.credential, () {
       super.credential = value;
-      _$credentialAtom.reportChanged();
-    }, _$credentialAtom, name: '${_$credentialAtom.name}_set');
+    });
   }
 
-  final _$logoutAsyncAction = AsyncAction('logout');
+  final _$logoutAsyncAction = AsyncAction('_LoginStoreBase.logout');
 
   @override
   Future<void> logout() {
     return _$logoutAsyncAction.run(() => super.logout());
   }
 
-  final _$signInAsyncAction = AsyncAction('signIn');
+  final _$signInAsyncAction = AsyncAction('_LoginStoreBase.signIn');
 
   @override
   Future<void> signIn() {
@@ -65,8 +62,10 @@ mixin _$LoginStore on _LoginStoreBase, Store {
 
   @override
   String toString() {
-    final string =
-        'user: ${user.toString()},credential: ${credential.toString()},logged: ${logged.toString()}';
-    return '{$string}';
+    return '''
+user: ${user},
+credential: ${credential},
+logged: ${logged}
+    ''';
   }
 }

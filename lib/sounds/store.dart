@@ -11,12 +11,19 @@ import "model.dart";
 
 part "store.g.dart";
 
+enum Pages {
+  mySonds,
+  communitySounds,
+  myInstantsSound,
+}
+
 class SoundsStore = _SoundsStoreBase with _$SoundsStore;
 
 abstract class _SoundsStoreBase with Store {
   final _fireStore = GetIt.I.get<Firestore>();
   final _loginStore = GetIt.I.get<LoginStore>();
   final _audioPlugin = GetIt.I.get<AudioPlayer>();
+  final _soundService = GetIt.I.get<SoundService>();
 
   Timer timerSearch;
 
@@ -50,7 +57,7 @@ abstract class _SoundsStoreBase with Store {
   ObservableStream<AudioPlayerState> _playerStateChanged;
 
   @observable
-  int currentTab = 0;
+  Pages currentTab = Pages.mySonds;
 
   @observable
   String playing = "";
@@ -71,11 +78,11 @@ abstract class _SoundsStoreBase with Store {
   @computed
   List<Sound> get sounds {
     switch (currentTab) {
-      case 0:
+      case Pages.mySonds:
         return mySounds;
-      case 1:
+      case Pages.communitySounds:
         return communitySounds;
-      case 2:
+      case Pages.myInstantsSound:
         return myIntantsSounds;
         break;
       default:
@@ -117,11 +124,11 @@ abstract class _SoundsStoreBase with Store {
   }
 
   @action
-  void setTabSelected(int value) {
+  void setTabSelected(Pages value) {
     currentTab = value;
 
     switch (currentTab) {
-      case 2:
+      case Pages.myInstantsSound:
         getMyInstantsSounds();
         break;
       default:
@@ -204,20 +211,22 @@ abstract class _SoundsStoreBase with Store {
     }
 
     timerSearch = Timer(Duration(milliseconds: 500), () async {
-      myIntantsSounds = await getMyInstants(page: page, search: value);
+      final out = await _soundService.getMyInstants(page: page, search: value);
+
+      myIntantsSounds = out?.data?.sounds ?? [];
     });
   }
 
   @action
   void searchSound(String value) {
     switch (currentTab) {
-      case 0:
+      case Pages.mySonds:
         searchMySounds(value);
         break;
-      case 1:
+      case Pages.communitySounds:
         searchCommunitySounds(value);
         break;
-      case 2:
+      case Pages.myInstantsSound:
         getMyInstantsSounds(value: value);
         break;
       default:
@@ -228,13 +237,13 @@ abstract class _SoundsStoreBase with Store {
   @action
   Future<void> playDiscord(Sound sound) async {
     playing = sound.url;
-    await playOnDiscord(sound.url);
+    await _soundService.playOnDiscord(sound.url);
     playing = "";
   }
 
   @action
   Future<void> stopDiscord(Sound sound) async {
     playing = "";
-    await stopPlayingOnDiscord(sound.url);
+    await _soundService.stopPlayingOnDiscord(sound.url);
   }
 }

@@ -83,7 +83,7 @@ class _MySoundsPageState extends State<MySoundsPage> {
       appBar: AppBar(
         actions: [
           Observer(
-            builder: (_) => (_loginStore.logged || _soundsStore.currentTab == 0)
+            builder: (_) => (_loginStore.logged && _soundsStore.currentTab == Pages.mySonds)
                 ? IconButton(
                     onPressed: () => Navigator.push(
                       context,
@@ -125,7 +125,7 @@ class _MySoundsPageState extends State<MySoundsPage> {
                 milliseconds: 400,
               ),
             );
-            _soundsStore.setTabSelected(index);
+            _soundsStore.setTabSelected(Pages.values[index]);
             _textEditController.clear();
           },
           items: _soundsStore.tabs.map((title) {
@@ -144,21 +144,23 @@ class _MySoundsPageState extends State<MySoundsPage> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Container(
-        height: 50.0,
-        width: 50.0,
-        child: FittedBox(
-          child: Observer(
-            builder: (_) => FloatingActionButton(
-              backgroundColor: Theme.of(context).bottomAppBarColor,
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddSoundPage()),
-              ),
-              child: const Icon(Icons.add),
-            ),
-          ),
-        ),
+      floatingActionButton: Observer(
+        builder: (_) => _soundsStore.currentTab == Pages.mySonds
+            ? Container(
+                height: 50.0,
+                width: 50.0,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).bottomAppBarColor,
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => AddSoundPage()),
+                    ),
+                    child: const Icon(Icons.add),
+                  ),
+                ),
+              )
+            : Container(),
       ),
       body: NotificationListener<ScrollNotification>(
         onNotification: (scrollNotification) => checkUserDragging(scrollNotification),
@@ -182,8 +184,8 @@ class _MySoundsPageState extends State<MySoundsPage> {
                 tab: 2,
               )
             ],
-            onPageChanged: (value) {
-              _soundsStore.setTabSelected(value);
+            onPageChanged: (idx) {
+              _soundsStore.setTabSelected(Pages.values[idx]);
               _textEditController.clear();
             },
           ),
